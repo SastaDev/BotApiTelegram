@@ -27,7 +27,7 @@ class TelegramBot:
                 raise exceptions.UnAuthorizedBotToken(bot_token)
         self.update_on_new_message = []
         self.update_on_added_to_chat = []
-        self.update_on_callback_data = []
+        self.update_on_callback_query = []
         self.conversations = []
         self.commands = []
         self.COMMAND_STARTS_WITH = ['/']
@@ -105,7 +105,7 @@ class TelegramBot:
                             chat['function'](types.Message_(self.bot, types.ChatJoined(update.my_chat_member)))
         if update.callback_query:
             callback_query = update.callback_query
-            for i in self.update_on_callback_data:
+            for i in self.update_on_callback_query:
                 for j in i['data']:
                     if j is True or j == callback_query.data:
                         i['function'](types.CallbackQuery_(self.bot, callback_query))
@@ -117,7 +117,6 @@ class TelegramBot:
                     chat = update.message.chat.chat_id
                     if c['chat_id'] == chat:
                         co = self.conversation(self.bot, chat)
-                        print('appending')
                         co.append_update(update.message)
 
     def check(self, data, url):
@@ -141,16 +140,16 @@ class TelegramBot:
         }
         self.commands.append(data)
 
-    def add_callback_data(self, data, function):
+    def add_callback_query(self, data, function):
         data_ = {
             'data': data,
             'function': function
         }
-        self.update_on_callback_data.append(data_)
+        self.update_on_callback_query.append(data_)
 
-    def on_update(self, func=None, command=None, new_message=False, added_to_chat=False, callback_data=False):
+    def on_update(self, func=None, command=None, new_message=False, added_to_chat=False, callback_query=False):
         @functools.wraps(func)
-        def _on(func, command=command, new_message=new_message, added_to_chat=added_to_chat, callback_data=callback_data):
+        def _on(func, command=command, new_message=new_message, added_to_chat=added_to_chat, callback_query=callback_query):
             if new_message is not False:
                 if not isinstance(new_message, list):
                     new_message = [new_message]
@@ -181,18 +180,18 @@ class TelegramBot:
                             'chats': added_to_chat,
                             'function': func
                         })
-            if callback_data is not False:
-                if not isinstance(callback_data, list):
-                    callback_data = [callback_data]
-                for chat in callback_data:
-                    if callback_data is True:
+            if callback_query is not False:
+                if not isinstance(callback_query, list):
+                    callback_query = [callback_query]
+                for chat in callback_query:
+                    if callback_query is True:
                         self.update_on_callback_data.append({
                             'data': True,
                             'function': func
                         })
                     else:
-                        self.update_on_callback_data.append({
-                            'data': callback_data,
+                        self.update_on_callback_query.append({
+                            'data': callback_query,
                             'function': func
                         })
         return _on
@@ -270,7 +269,7 @@ class TelegramBot:
         else:
             return methods.deleteMessage(self.bot, chat_id=_chat_id, message_id=message_id).delete_message()
 
-    def answer_callback_query(self, callback_query_id, text, show_alert=False, url=None, cache_time=0):
+    def answer_callback_query(self, callback_query_id, text=None, show_alert=False, url=None, cache_time=0):
         return methods.answerCallbackQuery(
             self.bot,
             callback_query_id=callback_query_id,
@@ -308,7 +307,7 @@ def signal_handler(signal, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-__version__ = '0.0.1'
+__version__ = '0.0.4'
 __credits__ = '(Copyright) Sasta Dev.'
 __docs__ = '''
 Telegram Updates Channel: @BotApiTelegram.

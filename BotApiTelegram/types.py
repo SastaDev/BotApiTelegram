@@ -57,7 +57,7 @@ class CallbackQuery_:
         d = self.bot.delete_message(self.chat.chat_id, self.message_id)
         return d
 
-    def answer(self, text, show_alert=False, url=None, cache_time=0):
+    def answer(self, text=None, show_alert=False, url=None, cache_time=0):
         ans = self.bot.answer_callback_query(
             callback_query_id=self.callback_query.callback_query_id,
             text=text,

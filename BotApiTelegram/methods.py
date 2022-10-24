@@ -123,7 +123,9 @@ class answerCallbackQuery:
         self.cache_time = cache_time
 
     def answer_callback_query(self):
-        url = '/answerCallbackQuery?callback_query_id={}&text={}'.format(self.callback_query_id, self.text)
+        url = '/answerCallbackQuery?callback_query_id={}'.format(self.callback_query_id)
+        if self.text:
+            url += '&text={}'.format(self.text)
         if self.show_alert:
             url += '&show_alert={}'.format(self.show_alert)
         if self.url:
