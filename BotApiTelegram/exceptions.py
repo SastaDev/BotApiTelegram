@@ -1,24 +1,21 @@
 class UnAuthorizedBotToken(Exception):
     def __init__(self, bot_token):
-        msg = f'Un-Authorized Bot Token: {bot_token}'
+        msg = 'Un-Authorized Bot Token: {}'.format(bot_token)
         super().__init__(msg)
 
 class UnKnownError(Exception):
     def __init__(self, error):
-        msg = f'UnKnow Error Occured:\n\n{error}'
+        msg = 'UnKnow Error Occured: {}'.format(error)
         super().__init__(msg)
 
 class ChatNotFound(Exception):
     def __init__(self, chat_id):
-        print(chat_id)
-        msg = 'Chat was not found'
-        if chat_id:
-            msg +=  f' {chat_id}'
+        msg = 'Chat was not found: {}'.format(chat_id)
         super().__init__(msg)
 
 class NoAdministratorsInPrivateChat(Exception):
-    def __init__(self):
-        msg = 'Administrators are not available in private chat.'
+    def __init__(self, chat_id):
+        msg = 'Administrators are not available in private chat: {}'.format(chat_id)
         super().__init__(msg)
 
 class MessageTextIsEmpty(Exception):
@@ -28,6 +25,7 @@ class MessageTextIsEmpty(Exception):
 
 class InvalidKeyboardMarkup(Exception):
     def __init__(self, array_of_array=False):
+        msg = None
         if array_of_array:
             msg = 'The KeyboardMarkup should be Array of Array!'
         super().__init__(msg)
