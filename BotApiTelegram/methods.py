@@ -50,10 +50,11 @@ class getMe:
         return str(msg)
 
 class sendMessage:
-    def __init__(self, bot, chat_id, text, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, text, message_thread_id=None, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.text = text
+        self.message_thread_id = message_thread_id
         self.parse_mode = parse_mode
         self.entities = entities
         self.disable_web_page_preview = disable_web_page_preview
@@ -65,6 +66,8 @@ class sendMessage:
 
     def send_message(self):
         url = '/sendMessage?chat_id={}&text={}'.format(self.chat_id, self.text)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.parse_mode:
             url += '&parse_mode={}'.format(self.parse_mode)
         if self.entities:
@@ -93,10 +96,11 @@ class sendMessage:
         return str(msg)
 
 class forwardMessage:
-    def __init__(self, bot, chat_id, from_chat_id, message_id, disable_notification=None, protect_content=None, *kwargs):
+    def __init__(self, bot, chat_id, from_chat_id, message_id, message_thread_id=None, disable_notification=None, protect_content=None, *kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.from_chat_id = from_chat_id
+        self.message_thread_id = message_thread_id
         self.disable_notification = disable_notification
         self.protect_content = protect_content
         self.message_id = message_id
@@ -104,6 +108,8 @@ class forwardMessage:
 
     def forward_message(self):
         url = '/forwardMessage?chat_id={}&from_chat_id={}&message_id={}'.format(self.chat_id, self.from_chat_id, self.message_id)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.disable_notification:
             url += '&disable_notification={}'.format(self.disable_notification)
         if self.protect_content:
@@ -120,11 +126,12 @@ class forwardMessage:
         return str(msg)
 
 class copyMessage:
-    def __init__(self, bot, chat_id, from_chat_id, message_id, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, *kwargs):
+    def __init__(self, bot, chat_id, from_chat_id, message_id, message_thread_id=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, *kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.from_chat_id = from_chat_id
         self.message_id = message_id
+        self.message_thread_id = message_thread_id
         self.caption = caption
         self.parse_mode = parse_mode
         self.caption_entities = caption_entities
@@ -167,10 +174,11 @@ class copyMessage:
         return str(msg)
 
 class sendPhoto:
-    def __init__(self, bot, chat_id, photo, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, photo, message_thread_id=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.photo = photo
+        self.message_thread_id = message_thread_id
         self.caption = caption
         self.parse_mode = parse_mode
         self.caption_entities = caption_entities
@@ -183,6 +191,8 @@ class sendPhoto:
 
     def send_photo(self):
         url = '/sendPhoto?chat_id={}&photo={}'.format(self.chat_id, self.photo)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.caption:
             url += '&caption={}'.format(self.caption)
         if self.parse_mode:
@@ -213,10 +223,11 @@ class sendPhoto:
         return str(msg)
 
 class sendVideo:
-    def __init__(self, bot, chat_id, video, duration=None, width=None, height=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, video, message_thread_id=None, duration=None, width=None, height=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.video = video
+        self.message_thread_id = message_thread_id
         self.duration = duration
         self.width = width
         self.height = height
@@ -233,6 +244,8 @@ class sendVideo:
 
     def send_video(self):
         url = '/sendVideo?chat_id={}&video={}'.format(self.chat_id, self.video)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.duration:
             url += '&duration={}'.format(self.duration)
         if self.width:
@@ -271,10 +284,11 @@ class sendVideo:
         return str(msg)
 
 class sendAudio:
-    def __init__(self, bot, chat_id, audio, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, audio, message_thread_id=None, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.photo = photo
+        self.message_thread_id = message_thread_id
         self.caption = caption
         self.parse_mode = parse_mode
         self.caption_entities = caption_entities
@@ -291,6 +305,8 @@ class sendAudio:
 
     def send_audio(self):
         url = '/sendAudio?chat_id={}&audio={}'.format(self.chat_id, self.audio)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.caption:
             url += '&caption={}'.format(self.caption)
         if self.parse_mode:
@@ -329,10 +345,11 @@ class sendAudio:
         return str(msg)
 
 class sendDocument:
-    def __init__(self, bot, chat_id, document, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, document, message_thread_id=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.document = document
+        self.message_thread_id = message_thread_id
         self.thumb = thumb
         self.caption = caption
         self.parse_mode = parse_mode
@@ -347,6 +364,8 @@ class sendDocument:
 
     def send_document(self):
         url = '/sendDocument?chat_id={}&document={}'.format(self.chat_id, self.audio)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.thumb:
             url += '&thumb={}'.format(self.thumb)
         if self.caption:
@@ -381,10 +400,11 @@ class sendDocument:
         return str(msg)
 
 class sendAnimation:
-    def __init__(self, bot, chat_id, animation, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, animation, message_thread_id=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.animation = animation
+        self.message_thread_id = message_thread_id
         self.width = width
         self.height = height
         self.thumb = thumb
@@ -400,6 +420,8 @@ class sendAnimation:
 
     def send_animation(self):
         url = '/sendAnimation?chat_id={}&animation={}'.format(self.chat_id, self.animation)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.width:
             url += '&width={}'.format(self.width)
         if self.height:
@@ -436,10 +458,11 @@ class sendAnimation:
         return str(msg)
 
 class sendVoice:
-    def __init__(self, bot, chat_id, voice, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, voice, message_thread_id=None, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.voice = voice
+        self.message_thread_id = message_thread_id
         self.caption = caption
         self.parse_mode = parse_mode
         self.caption_entities = caption_entities
@@ -453,6 +476,8 @@ class sendVoice:
 
     def send_voice(self):
         url = '/sendVoice?chat_id={}&voice={}'.format(self.chat_id, self.animation)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.caption:
             url += '&caption={}'.format(self.caption)
         if self.parse_mode:
@@ -485,10 +510,11 @@ class sendVoice:
         return str(msg)
 
 class sendVideoNote:
-    def __init__(self, bot, chat_id, video_note, duration=None, length=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, video_note, message_thread_id=None, duration=None, length=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.video_note = video_note
+        self.message_thread_id = message_thread_id
         self.duration = duration
         self.length = length
         self.disable_notification = disable_notification
@@ -500,6 +526,8 @@ class sendVideoNote:
 
     def send_video_note(self):
         url = '/sendVideoNote?chat_id={}&video_note={}'.format(self.chat_id, self.video_note)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.duration:
             url += '&duration={}'.format(self.duration)
         if self.length:
@@ -528,10 +556,11 @@ class sendVideoNote:
         return str(msg)
 
 class sendMediaGroup:
-    def __init__(self, bot, chat_id, media, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, **kwargs):
+    def __init__(self, bot, chat_id, media, message_thread_id=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.media = media
+        self.message_thread_id = message_thread_id
         self.disable_notification = disable_notification
         self.protect_content = protect_content
         self.reply_to_message_id = reply_to_message_id
@@ -540,6 +569,8 @@ class sendMediaGroup:
 
     def send_media_group(self):
         url = '/sendMediaGroup?chat_id={}&media={}'.format(self.chat_id, self.media)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.disable_notification:
             url += '&disable_notification={}'.format(self.disable_notification)
         if self.protect_content:
@@ -560,11 +591,12 @@ class sendMediaGroup:
         return str(msg)
 
 class sendLocation:
-    def __init__(self, bot, chat_id, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, *kwargs):
+    def __init__(self, bot, chat_id, latitude, longitude, message_thread_id=None, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, *kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.latitude = latitude
         self.longitude = longitude
+        self.message_thread_id = message_thread_id
         self.horizontal_accuracy = horizontal_accuracy
         self.live_period = live_period
         self.heading = heading
@@ -578,6 +610,8 @@ class sendLocation:
 
     def send_location(self):
         url = '/sendLocation?chat_id={}&latitude={}&longitude={}'.format(self.chat_id, self.latitude, self.longitude)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.horizontal_accuracy:
             url += '&horizontal_accuracy={}'.format(self.horizontal_accuracy)
         if self.live_period:
@@ -687,13 +721,14 @@ class stopMessageLiveLocation:
         return str(msg)
 
 class sendVenue:
-    def __init__(self, bot, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, latitude, longitude, title, address, message_thread_id=None, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.latitude = latitude
         self.longitude = longitude
         self.title = title
         self.address = address
+        self.message_thread_id = message_thread_id
         self.foursquare_id = foursquare_id
         self.foursquare_type = foursquare_type
         self.google_place_id = google_place_id
@@ -707,6 +742,8 @@ class sendVenue:
 
     def send_venue(self):
         url = '/sendVenue?chat_id={}&latitude={}&longitude={}&title={}&address={}'.format(self.chat_id, self.latitude, self.longitude, self.title, self.address)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.foursquare_id:
             url += '&foursquare_id={}'.format(self.foursquare_id)
         if self.foursquare_type:
@@ -739,12 +776,13 @@ class sendVenue:
         return str(msg)
 
 class sendContact:
-    def __init__(self, bot, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, phone_number, first_name, last_name=None, message_thread_id=None, vcard=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.phone_number = phone_number
         self.first_name = first_name
         self.last_name = last_name
+        self.message_thread_id = message_thread_id
         self.vcard = vcard
         self.disable_notification = disable_notification
         self.protect_content = protect_content
@@ -755,6 +793,8 @@ class sendContact:
 
     def send_contact(self):
         url = '/sendContact?chat_id={}&phone_number={}&first_name={}&'.format(self.chat_id, self.phone_number, self.first_name)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.last_name:
             url += '&last_name={}'.format(self.last_name)
         if self.vcard:
@@ -783,11 +823,12 @@ class sendContact:
         return str(msg)
 
 class sendPoll:
-    def __init__(self, bot, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, question, options, message_thread_id=None, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.question = question
         self.options = options
+        self.message_thread_id = message_thread_id
         self.is_anonymous = is_anonymous
         self.type = type
         self.allows_multiple_answers = allows_multiple_answers
@@ -807,6 +848,8 @@ class sendPoll:
 
     def send_poll(self):
         url = '/sendPoll?chat_id={}&question={}&options={}'.format(self.chat_id, self.question, self.options)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.is_anonymous:
             url += '&is_anonymous={}'.format(self.is_anonymous)
         if self.type:
@@ -851,9 +894,10 @@ class sendPoll:
         return str(msg)
 
 class sendDice:
-    def __init__(self, bot, chat_id, emoji=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
+    def __init__(self, bot, chat_id, message_thread_id=None, emoji=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
+        self.message_thread_id = message_thread_id
         self.emoji = emoji
         self.disable_notification = disable_notification
         self.protect_content = protect_content
@@ -864,7 +908,8 @@ class sendDice:
 
     def send_dice(self):
         url = '/sendDice?chat_id={}'.format(self.chat_id)
-        r = requests_session.get(self.bot.bot_url + url, params=self.extra)
+        if self.message_thread_id:
+            url += '&message_thread_id={}'.format(self.message_thread_id)
         if self.emoji:
             url += '&emoji={}'.format(self.emoji)
         if self.disable_notification:
@@ -879,6 +924,7 @@ class sendDice:
             btns = parse_buttons(self.reply_markup)
             btns = json.dumps(btns)
             url += '&reply_markup={}'.format(btns)
+        r = requests_session.get(self.bot.bot_url + url, params=self.extra)
         if r.status_code != 200:
             self.bot.check(r.json(), url)
         else:
@@ -1034,11 +1080,12 @@ class restrictChatMember:
         return str(msg)
 
 class promoteChatMember:
-    def __init__(self, bot, chat_id, user_id, is_anonymous=None, can_manage_chat=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_manage_video_chats=None, can_restrict_members=None, can_promote_members=None, can_change_info=None, can_invite_users=None, can_pin_messages=None, **kwargs):
+    def __init__(self, bot, chat_id, user_id, is_anonymous=None, can_manage_forum=None, can_manage_topics=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_manage_video_chats=None, can_restrict_members=None, can_promote_members=None, can_change_info=None, can_invite_users=None, can_pin_messages=None, **kwargs):
         self.bot = bot
         self.chat_id = chat_id
         self.user_id = user_id
         self.is_anonymous = is_anonymous
+        self.can_manage_topics = can_manage_topics
         self.can_manage_chat = can_manage_chat
         self.can_post_messages = can_post_messages
         self.can_edit_messages = can_edit_messages
@@ -1055,6 +1102,8 @@ class promoteChatMember:
         url = '/promoteChatMember?chat_id={}&user_id={}'.format(self.chat_id, self.chat_id)
         if self.is_anonymous:
             url += '&is_anonymous={}'.format(self.is_anonymous)
+        if self.can_manage_topics:
+            url += '&can_manage_topics={}'.format(self.can_manage_topics)
         if self.can_manage_chat:
             url += '&can_manage_chat={}'.format(self.can_manage_chat)
         if self.can_post_messages:
@@ -1486,7 +1535,11 @@ class getChat:
                 return self.option
             self.bot.check(r.json(), url)
         else:
-            self.result = types.Chat(r.json().get('result'))
+            self.result = r.json().get('result')
+            if self.result.get('type') == 'private':
+                self.result = types.User(self.result)
+            else:
+                self.result = types.Chat(self.result)
             return self.result
 
     def __repr__(self):
@@ -1582,6 +1635,152 @@ class deleteChatStickerSet:
         r = requests_session.get(self.bot.bot_url + url, params=self.extra)
         if r.status_code != 200:
             self.bot.check(r.json(), url)
+        else:
+            self.result = r.json().get('result')
+            return self.result
+
+    def __repr__(self):
+        msg = self.result
+        return str(msg)
+
+class getForumTopicIconStickers:
+    def __init__(self, bot, **kwargs):
+        self.bot = bot
+        self.extra = kwargs
+
+    def get_forum_topic_icon_sticker(self):
+        url = '/getForumTopicIconStickers'
+        r = requests_session.get(self.bot.bot_url + url, params=self.extra)
+        if r.status_code != 200:
+            self.bot.check(r.json(), url, params=self.extra)
+        else:
+            self.result = [types.Sticker(x) for x in r.json().get('result')]
+            return self.result
+
+    def __repr__(self):
+        msg = self.result
+        return str(msg)
+
+class createForumTopic:
+    def __init__(self, bot, chat_id, name, icon_color=None, icon_custom_emoji_id=None, **kwargs):
+        self.bot = bot
+        self.chat_id = chat_id
+        self.name = name
+        self.icon_color = icon_color
+        self.icon_custom_emoji_id = icon_custom_emoji_id
+        self.extra = kwargs
+
+    def create_forum_topic(self):
+        url = '/createForumTopic?chat_id={}&name={}'.format(self.chat_id, self.name)
+        if self.icon_color:
+            url += '&icon_color={}'.format(self.icon_color)
+        if self.icon_custom_emoji_id:
+            url += '&icon_custom_emoji_id={}'.format(self.icon_custom_emoji_id)
+        r = requests_session.get(self.bot.bot_url + url, params=self.extra)
+        if r.status_code != 200:
+            self.bot.check(r.json(), url, params=self.extra)
+        else:
+            self.result = types.ForumTopic(r.json().get('result'))
+            return self.result
+
+    def __repr__(self):
+        msg = self.result
+        return str(msg)
+
+class editForumTopic:
+    def __init__(self, bot, chat_id, name, icon_color, icon_custom_emoji_id, **kwargs):
+        self.bot = bot
+        self.chat_id = chat_id
+        self.name = name
+        self.icon_color = icon_color
+        self.icon_custom_emoji_id = icon_custom_emoji_id
+        self.extra = kwargs
+
+    def edit_forum_topic(self):
+        url = '/editForumTopic?chat_id={}&name={}&icon_color={}&icon_custom_emoji_id={}'.format(self.chat_id, self.name, self.icon_color, self.icon_custom_emoji_id)
+        r = requests_session.get(self.bot.bot_url + url, params=self.extra)
+        if r.status_code != 200:
+            self.bot.check(r.json(), url, params=self.extra)
+        else:
+            self.result = r.json().get('result')
+            return self.result
+
+    def __repr__(self):
+        msg = self.result
+        return str(msg)
+
+class closeForumTopic:
+    def __init__(self, bot, chat_id, message_thread_id, **kwargs):
+        self.bot = bot
+        self.chat_id = chat_id
+        self.message_thread_id = message_thread_id
+        self.extra = kwargs
+
+    def close_forum_topic(self):
+        url = '/closeForumTopic?chat_id={}&message_thread_id={}'.format(self.chat_id, self.message_thread_id)
+        r = requests_session.get(self.bot.bot_url + url, params=self.extra)
+        if r.status_code != 200:
+            self.bot.check(r.json(), url, params=self.extra)
+        else:
+            self.result = r.json().get('result')
+            return self.result
+
+    def __repr__(self):
+        msg = self.result
+        return str(msg)
+
+class reopenForumTopic:
+    def __init__(self, bot, chat_id, message_thread_id, **kwargs):
+        self.bot = bot
+        self.chat_id = chat_id
+        self.message_thread_id = message_thread_id
+        self.extra = kwargs
+
+    def reopen_forum_topic(self):
+        url = '/reopenForumTopic?chat_id={}&message_thread_id={}'.format(self.chat_id, self.message_thread_id)
+        r = requests_session.get(self.bot.bot_url + url, params=self.extra)
+        if r.status_code != 200:
+            self.bot.check(r.json(), url, params=self.extra)
+        else:
+            self.result = r.json().get('result')
+            return self.result
+
+    def __repr__(self):
+        msg = self.result
+        return str(msg)
+
+class deleteForumTopic:
+    def __init__(self, bot, chat_id, message_thread_id, **kwargs):
+        self.bot = bot
+        self.chat_id = chat_id
+        self.message_thread_id = message_thread_id
+        self.extra = kwargs
+
+    def delete_forum_topic(self):
+        url = '/deleteForumTopic?chat_id={}&message_thread_id={}'.format(self.chat_id, self.message_thread_id)
+        r = requests_session.get(self.bot.bot_url + url, params=self.extra)
+        if r.status_code != 200:
+            self.bot.check(r.json(), url, params=self.extra)
+        else:
+            self.result = r.json().get('result')
+            return self.result
+
+    def __repr__(self):
+        msg = self.result
+        return str(msg)
+
+class unpinAllForumTopicMessages:
+    def __init__(self, bot, chat_id, message_thread_id, **kwargs):
+        self.bot = bot
+        self.chat_id = chat_id
+        self.message_thread_id = message_thread_id
+        self.extra = kwargs
+
+    def unpin_all_forum_topic_messages(self):
+        url = '/unpinAllForumTopicMessages?chat_id={}&message_thread_id={}'.format(self.chat_id, self.message_thread_id)
+        r = requests_session.get(self.bot.bot_url + url, params=self.extra)
+        if r.status_code != 200:
+            self.bot.check(r.json(), url, params=self.extra)
         else:
             self.result = r.json().get('result')
             return self.result
@@ -2213,7 +2412,7 @@ class getPermissions:
             return getattr(chat, 'permissions', None)
         chat_member = getChatMember(bot=self.bot, chat_id=self.chat_id, user_id=self.user_id).get_chat_member()
         self.permissions = types.ChatMember(chat_member.__dict__).do()
-        if self.permissions.status == 'member':
+        if self.permissions.status in ('member', 'left', 'kicked'):
             chat = getChat(bot=self.bot, chat_id=self.chat_id).get_chat()
             chat_perms = chat.permissions
             self.permissions.can_manage_chat = chat_perms.can_change_info

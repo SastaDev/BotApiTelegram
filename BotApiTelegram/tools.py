@@ -11,6 +11,6 @@ def parse_entities(message):
             commands.append(message.text[command.offset - 1 + command.length:])
     users = []
     for user in entities:
-        if user.type == 'text_mention' and user user:
+        if user.type == 'text_mention':
             users.append(user.user)
     return [commands, users]

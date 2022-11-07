@@ -27,6 +27,14 @@ def Date(seconds):
 class DefaultSettings:
     def __init__(self):
         self.link_preview = True
+        self.parse_mode = 'markdown'
+
+    def get_dict(self):
+        return self.__dict__
+
+    def __repr__(self):
+        msg = self.__dict__
+        return str(msg)
 
 class getMe:
     def __init__(self, get_me):
@@ -66,7 +74,7 @@ class Updates:
         if update.get('chosen_inline_result'):
             self.chosen_inline_result = ChosenInlineResult(update.get('chosen_inline_result'))
         if update.get('callback_query'):
-            self.callback_query = CallbackQuery(self.bot, update.get('callback_query'))
+            self.callback_query = CallbackQuery(update.get('callback_query'))
         if update.get('shipping_query'):
             self.shipping_query = ShippingQuery(update.get('shipping_query'))
         if update.get('pre_checkout_query'):
@@ -98,7 +106,7 @@ class User:
             user = user.__dict__
         except:
             pass
-        self.user_id = user.get('id') or user.get('user_id')
+        self.id = user.get('id')
         self.is_bot = user.get('is_bot')
         self.first_name = user.get('first_name')
         self.last_name = user.get('last_name')
@@ -123,7 +131,7 @@ class Chat:
             chat = chat.__dict__
         except:
             pass
-        self.chat_id = chat.get('id') or chat.get('chat_id')
+        self.id = chat.get('id')
         if chat.get('title'):
             self.title = chat.get('title')
             self.all_members_are_administrators = chat.get('all_members_are_administrators')
@@ -134,8 +142,11 @@ class Chat:
         self.type = chat.get('type')
         self.is_group = True if chat.get('type') in ['group', 'supergroup'] else False
         self.is_private = True if chat.get('type') == 'private' else False
+        self.is_forum = True if chat.get('type') in ['group', 'supergroup'] else False
         if chat.get('photo'):
             self.photo = ChatPhoto(chat.get('photo'))
+        self.active_usernames = [x for x in chat.get('active_usernames')] if chat.get('active_usernames') else None
+        self.emoji_status_custom_emoji_id = [x for x in chat.get('emoji_status_custom_emoji_id')] if chat.get('emoji_status_custom_emoji_id') else None
         if chat.get('bio'):
             self.bio = chat.get('bio')
         if chat.get('has_private_forwards'):
@@ -184,6 +195,10 @@ class Message:
             pass
         if raw_message.get('message_id'):
             self.message_id = raw_message.get('message_id')
+        if raw_message.get('message_thread_id'):
+            self.message_thread_id = raw_message.get('message_thread_id')
+        if raw_message.get('is_topic_message'):
+            self.is_topic_message = raw_message.get('is_topic_message')
         if raw_message.get('from'):
             self.from_user = User(raw_message.get('from'))
         if raw_message.get('sender_chat'):
@@ -235,10 +250,8 @@ class Message:
             self.document = Document(raw_message.get('document'))
         if raw_message.get('photo'):
             self.photo = [PhotoSize(x) for x in raw_message.get('photo')]
-        '''
         if raw_message.get('sticker'):
             self.sticker = Sticker(raw_message.get('sticker'))
-        '''
         if raw_message.get('video'):
             self.video = Video(raw_message.get('video'))
         if raw_message.get('video_note'):
@@ -299,6 +312,12 @@ class Message:
         '''
         if raw_message.get('proximity_alert_triggered'):
             self.proximity_alert_triggered = ProximityAlertTriggered(raw_message.get('proximity_alert_triggered'))
+        if raw_message.get('forum_topic_created'):
+            self.forum_topic_created = ForumTopicCreated(raw_message.get('forum_topic_created'))
+        if raw_message.get('forum_topic_closed'):
+            self.forum_topic_closed = ForumTopicClosed(raw_message.get('forum_topic_closed'))
+        if raw_message.get('forum_topic_reopened'):
+            self.forum_topic_reopened = ForumTopicReopened(raw_message.get('forum_topic_reopened'))
         if raw_message.get('video_chat_scheduled'):
             self.video_chat_scheduled = VideoChatScheduled(raw_message.get('video_chat_scheduled'))
         if raw_message.get('video_chat_started'):
@@ -720,6 +739,51 @@ class MessageAutoDeleteTimerChanged:
         msg = self.__dict__
         return str(msg)
 
+class ForumTopicCreated:
+    def __init__(self, forum_topic_created):
+        try:
+            forum_topic_created = forum_topic_created.__dict__
+        except:
+            pass
+        self.name = forum_topic_created.get('name')
+        self.icon_color = forum_topic_created.get('icon_color')
+        self.icon_custom_emoji_id = forum_topic_created.get('icon_custom_emoji_id')
+
+    def get_dict(self):
+        return self.__dict__
+
+    def __repr__(self):
+        msg = self.__dict__
+        return str(msg)
+
+class ForumTopicClosed:
+    def __init__(self, forum_topic_closed):
+        try:
+            forum_topic_closed = forum_topic_closed.__dict__
+        except:
+            pass
+
+    def get_dict(self):
+        return self.__dict__
+
+    def __repr__(self):
+        msg = self.__dict__
+        return str(msg)
+
+class ForumTopicReopened:
+    def __init__(self, forum_topic_reopened):
+        try:
+            forum_topic_reopened = forum_topic_reopened.__dict__
+        except:
+            pass
+
+    def get_dict(self):
+        return self.__dict__
+
+    def __repr__(self):
+        msg = self.__dict__
+        return str(msg)
+
 class VideoChatScheduled:
     def __init__(self, video_chat_scheduled):
         try:
@@ -1050,6 +1114,7 @@ class ChatAdministratorRights:
         self.can_post_messages = chat_administrator_rights.get('can_post_messages')
         self.can_edit_messages = chat_administrator_rights.get('can_edit_messages')
         self.can_pin_messages = chat_administrator_rights.get('can_pin_messages')
+        self.can_manage_topics = chat_administrator_rights.get('can_manage_topics')
 
     def get_dict(self):
         return self.__dict__
@@ -1142,6 +1207,7 @@ class ChatMemberAdministrator:
         self.can_post_messages = chat_member_administrator.get('can_post_messages')
         self.can_edit_messages = chat_member_administrator.get('can_edit_messages')
         self.can_pin_messages = chat_member_administrator.get('can_pin_messages')
+        self.can_manage_topics = chat_member_administrator.get('can_manage_topics')
         self.custom_title = chat_member_administrator.get('custom_title')
 
     def get_dict(self):
@@ -1179,6 +1245,7 @@ class ChatMemberRestricted:
         self.can_change_info = chat_member_restricted.get('can_change_info')
         self.can_invite_users = chat_member_restricted.get('can_invite_users')
         self.can_pin_messages = chat_member_restricted.get('can_pin_messages')
+        self.can_manage_topics = chat_member_restricted.get('can_manage_topics')
         self.can_send_messages = chat_member_restricted.get('can_send_messages')
         self.can_send_media_messages = chat_member_restricted.get('can_send_media_messages')
         self.can_send_polls = chat_member_restricted.get('can_send_polls')
@@ -1280,6 +1347,7 @@ class ChatPermissions:
         self.can_change_info = chat_permissions.get('can_change_info')
         self.can_invite_users = chat_permissions.get('can_invite_users')
         self.can_pin_messages = chat_permissions.get('can_pin_messages')
+        self.can_manage_topics = chat_permissions.get('can_manage_topics')
 
     def get_json(self):
         return self.__dict__
@@ -1848,20 +1916,41 @@ class Message_:
         self.is_group = True if self.chat_type == 'group' else False
         self.is_forward = True if getattr(msg, 'forward_from', None) else False
 
-    def reply(self, text, reply_to=None, link_preview=True, parse_mode='markdown', **kwargs):
+    def reply(self, text, link_preview=None, disable_web_page_preview=None, parse_mode=None, buttons=None, reply_markup=None, **kwargs):
         if not getattr(self, 'message_id', None):
             self.message_id = None
-        chat_id = self.chat.chat_id
-        r = self.bot.send_message(chat_id=chat_id, text=text, reply_to=self.message_id, link_preview=link_preview, parse_mode=parse_mode, **kwargs)
+        chat_id = self.chat.id
+        reply_to_message_id = self.message_id
+        if link_preview:
+            disable_web_page_preview = link_preview
+        elif disable_web_page_preview:
+            pass
+        else:
+            disable_web_page_preview = self.bot.default_settings.link_preview 
+        if not parse_mode:
+            parse_mode = self.bot.default_settings.parse_mode
+        if buttons:
+            reply_markup = buttons
+        r = self.bot.send_message(chat_id=chat_id, text=text, reply_to_message_id=reply_to_message_id, disable_web_page_preview=disable_web_page_preview, parse_mode=parse_mode, reply_markup=reply_markup, **kwargs)
         return r
 
-    def edit(self, text, link_preview=True, parse_mode='markdown', **kwargs):
-        chat_id = self.chat.chat_id
-        e = self.bot.edit_message(chat_id=chat_id, message_id=self.message_id, text=text, link_preview=link_preview, parse_mode=parse_mode, **kwargs)
+    def edit(self, text, link_preview=None, disable_web_page_preview=None, parse_mode=None, buttons=None, reply_markup=None, **kwargs):
+        chat_id = self.chat.id
+        if link_preview:
+            disable_web_page_preview = link_preview
+        elif disable_web_page_preview:
+            pass
+        else:
+            disable_web_page_preview = self.bot.default_settings.link_preview 
+        if not parse_mode:
+            parse_mode = self.bot.default_settings.parse_mode
+        if buttons:
+            reply_markup = buttons
+        e = self.bot.edit_message_text(chat_id=chat_id, message_id=self.message_id, text=text, disable_web_page_preview=disable_web_page_preview, parse_mode=parse_mode, reply_markup=reply_markup, **kwargs)
         return e
 
     def delete(self):
-        d = self.bot.delete_message(chat_id=self.chat.chat_id, message_id=self.message_id)
+        d = self.bot.delete_message(chat_id=self.chat.id, message_id=self.message_id)
         return d
 
     def __getattr__(self, a):
@@ -1879,20 +1968,41 @@ class CallbackQuery_:
         self.message_id = callback_query.message.message_id
         self.chat = callback_query.message.chat
 
-    def reply(self, text, reply_to=None, link_preview=True, parse_mode='markdown', **kwargs):
+    def reply(self, text, link_preview=None, disable_web_page_preview=None, parse_mode=None, buttons=None, reply_markup=None, **kwargs):
         if not getattr(self, 'message_id', None):
             self.message_id = None
-        chat_id = self.chat.chat_id
-        r = self.bot.send_message(chat_id=chat_id, text=text, reply_to=self.message_id, link_preview=link_preview, parse_mode=parse_mode, **kwargs)
+        chat_id = self.chat.id
+        reply_to_message_id = self.message_id
+        if link_preview:
+            disable_web_page_preview = link_preview
+        elif disable_web_page_preview:
+            pass
+        else:
+            disable_web_page_preview = self.bot.default_settings.link_preview 
+        if not parse_mode:
+            parse_mode = self.bot.default_settings.parse_mode
+        if buttons:
+            reply_markup = buttons
+        r = self.bot.send_message(chat_id=chat_id, text=text, reply_to_message_id=reply_to_message_id, disable_web_page_preview=disable_web_page_preview, parse_mode=parse_mode, reply_markup=reply_markup, **kwargs)
         return r
 
-    def edit(self, text, link_preview=True, parse_mode='markdown', **kwargs):
-        chat_id = self.chat.chat_id
-        e = self.bot.edit_message(chat_id=chat_id, message_id=self.message_id, text=text, link_preview=link_preview, parse_mode=parse_mode, **kwargs)
+    def edit(self, text, link_preview=None, disable_web_page_preview=None, parse_mode=None, buttons=None, reply_markup=None, **kwargs):
+        chat_id = self.chat.id
+        if link_preview:
+            disable_web_page_preview = link_preview
+        elif disable_web_page_preview:
+            pass
+        else:
+            disable_web_page_preview = self.bot.default_settings.link_preview 
+        if not parse_mode:
+            parse_mode = self.bot.default_settings.parse_mode
+        if buttons:
+            reply_markup = buttons
+        e = self.bot.edit_message_text(chat_id=chat_id, message_id=self.message_id, text=text, disable_web_page_preview=disable_web_page_preview, parse_mode=parse_mode, reply_markup=reply_markup, **kwargs)
         return e
 
     def delete(self):
-        d = self.bot.delete_message(chat_id=self.chat.chat_id, message_id=self.message_id)
+        d = self.bot.delete_message(chat_id=self.chat.id, message_id=self.message_id)
         return d
 
     def answer(self, text=None, show_alert=False, url=None, cache_time=0, **kwargs):
@@ -1905,6 +2015,9 @@ class CallbackQuery_:
             **kwargs
             )
         return ans
+
+    def __getattr__(self, a):
+        return getattr(self.callback_query, a)
 
     def __repr__(self):
         msg = self.callback_query.__dict__
